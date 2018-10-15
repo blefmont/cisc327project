@@ -2,8 +2,6 @@
     Transaction
 '''
 
-import math
-
 class Transaction:
     
     def __init__(self):
@@ -21,7 +19,7 @@ class Transaction:
         return s
     
 
-    def checkValidNumber(self, number):
+    def checkValidNumber(self, n):
         try:
             if int(str(n)[:1]) == 0:
                 return False
@@ -54,6 +52,15 @@ class Transaction:
                       date = "0"):
         pass
 
+class SellTicket(Transaction):
+    def __init__(self):
+        super()
+
+    def execute(self):
+        self.serviceNumber = promptAndInput("Input Service Number:");
+        self.serviceName = promptAndInput("Input Service Name:");
+        
+
 class Login(Transaction):
     def __init__(self):
         super()
@@ -61,5 +68,5 @@ class Login(Transaction):
         self.prompt("Login not yet implemented")
 
 
-        
+
 
