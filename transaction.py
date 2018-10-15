@@ -5,6 +5,7 @@
 
 import math
 =======
+import manager
 >>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
 
 class Transaction:
@@ -47,6 +48,12 @@ class Transaction:
 class Login(Transaction):
     def __init__(self):
         super()
+    def execute(self):
+        state = manager.getState()
+        if (state != "loggedOut"):
+            self.prompt("Incorrect state")
+        else:
+            self.prompt("correct state")
         self.prompt("Login not yet implemented")
 
 
