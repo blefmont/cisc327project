@@ -1,8 +1,8 @@
 '''
     Transaction
 '''
+
 import math
-import manager
 
 class Transaction:
     
@@ -26,7 +26,7 @@ class Transaction:
             if int(str(n)[:1]) == 0:
                 return False
             x = int(n);
-            if x > 10000 and x < 99999:
+            if x >= 10000 and x <= 99999:
                 return True
             else:
                 return False
@@ -34,7 +34,20 @@ class Transaction:
             return False
 
     def checkValidName(self, name):
-        pass        
+        try:
+            valid = "^[a-zA-Z0-9' ]*$";
+            if type(n) != str:
+                return False
+            elif len(n) < 3 or len(n) > 39:
+                return False       
+            elif n[:1] == " " or n[-1:] == " ":
+                return False       
+            elif bool(re.match(valid, n)):
+                return True
+            else:
+                return False
+        except ValueError:
+            return False     
 
     def createTSFLine(self, code, serviceNumber1 = "00000", amount = "0", \
                       serviceNumber2 = "00000", serviceName = "****", \
@@ -44,11 +57,9 @@ class Transaction:
 class Login(Transaction):
     def __init__(self):
         super()
-    def execute(self):
-        state = manager.getState()
-        if (state != "loggedOut"):
-            self.prompt("Incorrect state")
-        else:
-            self.prompt("correct state")
+    def execute(self, state):
         self.prompt("Login not yet implemented")
+
+
+        
 
