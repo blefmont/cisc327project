@@ -13,7 +13,6 @@ def inputLoop():
         else:
             print("Invalid transaction")
 
-
             
 
 manager.initialize()

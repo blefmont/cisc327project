@@ -10,15 +10,19 @@ class Transaction:
     
     def __init__(self):
         pass
-
+    def newSession(self):
+        pass
     def execute(self):
-        self.prompt("execute not implemented yet")
-
+        if (manager.getState() == "loggedOut"):
+            self.prompt("You must be logged in to perform that transaction")
+            return False
+        else:
+            return True
     def prompt(self, s):
         print(s)    
 
     def promptAndInput(self, s):
-        response = input(s)
+        response = input(s+'\n')
         try:
             str(response)
         except TypeError:
@@ -61,19 +65,19 @@ class Transaction:
         try:
             stdate = str(date)
             if (not stdate.isnumeric()):
-                return None
+                return False
             if (len(stdate) != 8):
-                return None
+                return False
             if (not(int(stdate[0:4]) >= 1980 and int(stdate[0:4] <= 2999))):
-                return None
+                return False
             if (not(int(stdate[4:6]) >= 1 and int(stdate[4:6] <= 12))):
-                return None
+                return False
             if (not(int(stdate[6:8]) >= 1 and int(stdate[6:8] <= 31))):
-                return None
+                return False
             return True
         
-        except BaseException:
-            return None
+        except:
+            return False
 
             
     def createTSFLine(self, code, serviceNumber1 = "00000", amount = "0", \
@@ -86,47 +90,50 @@ class Transaction:
         # Check that the service number is a valid entry
         if (not (serviceNumber1 == "00000" or self.checkValidNumber(serviceNumber1))):
             self.prompt("Invalid service number, transaction not completed")
-            return None
+            return False
         
         # Check that the ticket amount is valid
         amount = str(amount)
         if (amount.isnumeric()):
             if (not(int(amount) <= 1000 and int(amount) >= 0)):
                 self.prompt("Ticket amount must be between 1 and 1000")
-                return None
+                return False
         else:
             self.prompt("Ticket amount is invalid")
-            return None
+            return False
 
         #Check that the second service number is valid
         if (not (serviceNumber2 == "00000" or self.checkValidNumber(serviceNumber2))):
             self.prompt("Invalid second service number, transaction not completed")
-            return None
+            return False
         
         #Check that the name is valid
         if (not (self.checkValidName(serviceName) or serviceName == "****")):
             self.prompt ("The service name is invalid, transaction not completed")
-            return None
+            return False
 
         #Check that the date is 0 or the code is CRE
         if (code == 'CRE' != date == "0"):
             self.prompt ("Date field had unexpected data, transaction not completed")
-            return None
+            return False
+
+        #Check that the line fits properly
         try:
             infoList = [code, serviceNumber1, amount, serviceNumber2, \
                          serviceName, date]
             infoList = [str(i) for i in infoList]
             line = " ".join(infoList)
         except (TypeError):
-            return None
+            return False
 
         if (len(line) > 68):
             self.prompt ("Error: the transaction has too many characters.")
-            return None
+            return False
         
         else:
             manager.transactionSummary.append(line)
             self.prompt ("Transaction successful")
+            return True
             
 class Login(Transaction):
     
@@ -144,6 +151,7 @@ class Login(Transaction):
                 else:
                     self.prompt("Valid services has unexpected content")
                     return None
+            VSFile.close()
         except IOError:
             self.prompt("Error reading valid services file")
             return None
@@ -162,6 +170,39 @@ class Login(Transaction):
                 return None
                 
         self.prompt("Login successful, welcome " + str(manager.getState()))
+class Logout(Transaction):
+    def __init__(self):
+        super()
+    def execute(self):
+        if (not super().execute()):
+            return None
+        try:
+            TSF = open("TransactionSummaryFile.txt", 'wt')
+            if (self.createTSFLine('EOS')):
+                TSF.writelines(manager.transactionSummary)
+            else:
+                self.prompt("Error while creating TSF")
+                return None
+            TSF.close()
+        except IOError:
+            self.prompt("IO error during logout")
+            return None
+        manager.changeState("loggedOut")
+class CreateService(Transaction):
+    def __init__(self):
+        super()
+class DeleteService(Transaction):
+    def __init__(self):
+        super()
+class SellTicket(Transaction):
+    def __init__(self):
+        super()
+class CancelTicket(Transaction):
+    def __init__(self):
+        super()
+class ChangeTicket(Transaction):
+    def __init__(self):
+        super()
 
 
 
