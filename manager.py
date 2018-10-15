@@ -4,6 +4,8 @@ import transaction as tModule
 
 transactions = {}
 userState = ""
+validServices = []
+transactionSummary = []
 
 def getState():
     global userState
