@@ -8,6 +8,8 @@ def inputLoop():
         action = input()
         if (action in manager.transactions.keys()):
             manager.transactions[action].execute()
+        elif (action == "debug"):
+            break
         else:
             print("Invalid transaction")
 
