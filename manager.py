@@ -4,6 +4,8 @@ import transaction as tModule
 
 transactions = {}
 userState = ""
+validServices = []
+transactionSummary = []
 
 def getState():
     global userState
@@ -18,6 +20,10 @@ def changeState(newState):
     if (newState == "loggedOut" or newState == "agent" \
                 or newState == "planner"):
         userState = newState
+        validServices.clear()
+        transactionSummary.clear()
+        for i in transactions.values():
+            i.newSession()
     else:
         if (type(st) != str): raise TypeError("State must be a string")
         else: raise ValueError('State must be "loggedOut, "agent" or "planner"')
@@ -27,5 +33,10 @@ def initialize():
     global userState
     global transactions
     userState = "loggedOut"
-    login = tModule.Login()
-    transactions["login"] = login
+
+    transactions["login"] = tModule.Login()
+    transactions["logout"] = tModule.Logout()
+    transactions["createservice"] = tModule.CreateService()
+    transactions["deleteservice"] = tModule.DeleteService()
+    transactions["sellticket"] = tModule.SellTicket()
+    transactions["cancelticket"] = tModule.CancelTicket()
