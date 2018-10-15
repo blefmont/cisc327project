@@ -1,8 +1,11 @@
 '''
     Transaction
 '''
+<<<<<<< HEAD
 
 import math
+=======
+>>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
 
 class Transaction:
     
@@ -44,9 +47,11 @@ class Transaction:
 class Login(Transaction):
     def __init__(self):
         super()
-    def execute(self, state):
         self.prompt("Login not yet implemented")
 
 
+<<<<<<< HEAD
         
 
+=======
+>>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
