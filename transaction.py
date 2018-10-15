@@ -2,27 +2,38 @@
     Transaction
 '''
 
-class Transaction(object):
+
+class Transaction:
     
     def __init__(self):
         pass
 
-    def execute():
-        pass
+    def execute(self):
+        self.prompt("execute not implemented yet")
 
-    def prompt(s):
+    def prompt(self, s):
         print(s)
         pass    
 
-    def promptAndInput(s):
+    def promptAndInput(self, s):
+        self.prompt("promptAndInput not yet implemented")
         return s
     
 
-    def checkValidNumber(name):
+    def checkValidNumber(self, name):
         pass
 
-    def checkValidName(number):
+    def checkValidName(self, number):
         pass        
 
+    def createTSFLine(self, code, serviceNumber1 = "00000", amount = "0", \
+                      serviceNumber2 = "00000", serviceName = "****", \
+                      date = "0"):
+        pass
 
+class Login(Transaction):
+    def __init__(self):
+        super()
+    def execute(self, state):
+        self.prompt("Login not yet implemented")
 
