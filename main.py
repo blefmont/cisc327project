@@ -29,7 +29,7 @@ def inputLoop():
     while (not end):
         action = input()
         if (action in transactions.keys()):
-            transactions[action].execute()
+            transactions[action].execute(getState)
         else:
             print("Invalid transaction")
 
