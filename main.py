@@ -1,4 +1,5 @@
 ## CISC 327 project main file
+import manager
 
     
 def inputLoop():
@@ -9,6 +10,8 @@ def inputLoop():
         if (action in transactions.keys()):
             transactions[action].execute(getState)
 =======
+        if (action in manager.transactions.keys()):
+            manager.transactions[action].execute()
 >>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
         else:
             print("Invalid transaction")
@@ -16,5 +19,6 @@ def inputLoop():
 
             
 
+manager.initialize()
 inputLoop()
         
