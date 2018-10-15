@@ -28,7 +28,7 @@ class Transaction:
         return response
     
 
-    def checkValidNumber(self, number):
+    def checkValidNumber(self, n):
         try:
             if int(str(n)[:1]) == 0:
                 return False
