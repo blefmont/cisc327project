@@ -1,12 +1,8 @@
 '''
     Transaction
 '''
-<<<<<<< HEAD
-
 import math
-=======
 import manager
->>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
 
 class Transaction:
     
@@ -56,9 +52,3 @@ class Login(Transaction):
             self.prompt("correct state")
         self.prompt("Login not yet implemented")
 
-
-<<<<<<< HEAD
-        
-
-=======
->>>>>>> e29057b756a1fb94b7634019892e5d637a61ca60
