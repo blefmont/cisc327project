@@ -7,6 +7,7 @@ import manager
 import re
 
 #Top level transaction class
+
 class Transaction:
     
     def __init__(self):
@@ -100,7 +101,7 @@ class Transaction:
         #Check that the date is 0 or the code is CRE
         if (code == 'CRE' != date == "0"):
             self.prompt ("Date field had unexpected data, transaction not completed")
-            return False
+            return False        
 
         #Check that the line fits properly
         try:
@@ -204,24 +205,16 @@ class CreateService(Transaction):
         
             stdate = str(date)
             if (not stdate.isnumeric()):
-                print(1)
                 return False
             if (len(stdate) != 8):
-                print(2)
                 return False
             if (not(int(stdate[0:4]) >= 1980 and int(stdate[0:4]) <= 2999)):
-                print(3)
                 return False
             if (not(int(stdate[4:6]) >= 1 and int(stdate[4:6]) <= 12)):
-                print(4)
                 return False
             if (not(int(stdate[6:8]) >= 1 and int(stdate[6:8]) <= 31)):
-                print(5)
                 return False
             return True
-        
-        
-            return False
 
 class DeleteService(Transaction):
     def __init__(self):
@@ -229,6 +222,10 @@ class DeleteService(Transaction):
 class SellTicket(Transaction):
     def __init__(self):
         super()
+
+    def execute(self):
+        self.serviceNumber = promptAndInput("Input Service Number:");
+        self.serviceName = promptAndInput("Input Service Name:");
 class CancelTicket(Transaction):
     def __init__(self):
         super()
@@ -238,5 +235,5 @@ class ChangeTicket(Transaction):
 
 
 
-        
+
 
