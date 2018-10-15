@@ -6,12 +6,15 @@ import math
 import manager
 import re
 
+#Top level transaction class
 class Transaction:
     
     def __init__(self):
         pass
+    #To be called when a new session starts, allows objects to reset memory
     def newSession(self):
         pass
+    #By default execute makes sure you are logged in
     def execute(self):
         if (manager.getState() == "loggedOut"):
             self.prompt("You must be logged in to perform that transaction")
@@ -27,12 +30,13 @@ class Transaction:
             str(response)
         except TypeError:
             self.prompt("invalid input")
+            #If there is an error trying to parse input, keep asking
             response = None
             while (response is None):
                 response = self.promptAndInput(s)
         return response
     
-
+    #Checks if a number follows proper format. Does not check valid services file
     def checkValidNumber(self, n):
         try:
             if int(str(n)[:1]) == 0:
@@ -44,7 +48,7 @@ class Transaction:
                 return False
         except ValueError:
             return False
-
+    #Check if service name follows proper format
     def checkValidName(self, n):
         try:
             valid = "^[a-zA-Z0-9' ]*$";
@@ -61,25 +65,6 @@ class Transaction:
         except ValueError:
             return False
         
-    def checkValidDate(self, date):
-        try:
-            stdate = str(date)
-            if (not stdate.isnumeric()):
-                return False
-            if (len(stdate) != 8):
-                return False
-            if (not(int(stdate[0:4]) >= 1980 and int(stdate[0:4] <= 2999))):
-                return False
-            if (not(int(stdate[4:6]) >= 1 and int(stdate[4:6] <= 12))):
-                return False
-            if (not(int(stdate[6:8]) >= 1 and int(stdate[6:8] <= 31))):
-                return False
-            return True
-        
-        except:
-            return False
-
-            
     def createTSFLine(self, code, serviceNumber1 = "00000", amount = "0", \
                       serviceNumber2 = "00000", serviceName = "****", \
                       date = "0"):
@@ -131,7 +116,7 @@ class Transaction:
             return False
         
         else:
-            manager.transactionSummary.append(line)
+            manager.transactionSummary.append(line + '\n')
             self.prompt ("Transaction successful")
             return True
             
@@ -146,9 +131,7 @@ class Login(Transaction):
             VSFile = open("validServices.txt")
             VSLines = VSFile.readlines()
             for line in VSLines:
-                if (self.checkValidNumber(line.strip())):
-                    manager.validServices.append(line.strip())
-                else:
+                if (not self.checkValidNumber(line)):
                     self.prompt("Valid services has unexpected content")
                     return None
             VSFile.close()
@@ -165,6 +148,8 @@ class Login(Transaction):
             response = self.promptAndInput("What mode would you like to enter? Options are agent or planner.")
             if (response == "agent" or response == "planner"):
                 manager.changeState(response)
+                for line in VSLines:
+                    manager.validServices.append(line)
             else:
                 self.prompt("login failed, invalid mode")
                 return None
@@ -191,6 +176,53 @@ class Logout(Transaction):
 class CreateService(Transaction):
     def __init__(self):
         super()
+    def execute(self):
+        if (not super().execute()):
+            return None
+        if (manager.getState() != "planner"):
+            self.prompt("You must be in planner mode to use create service")
+            return None
+        
+        snum = self.promptAndInput("Please enter the service number")
+        date = self.promptAndInput("Please enter the service date in format YYYYMMDD")
+        sname = self.promptAndInput("Please enter the service name")
+        
+        if (not self.checkValidNumber(snum)):
+            self.prompt("Invalid service number")
+            return None
+        if ((not self.checkValidName(sname)) or sname.count("'")):
+            self.prompt("Invalid service name")
+            return None
+        if (not self.checkValidDate(date)):
+            self.prompt("Invalid service date")
+            return None
+        if (manager.validServices.count(snum)):
+            self.prompt("Services number already exists")
+        self.createTSFLine('CRE', serviceNumber1 = snum, serviceName = sname, date = date)
+            
+    def checkValidDate(self, date):
+        
+            stdate = str(date)
+            if (not stdate.isnumeric()):
+                print(1)
+                return False
+            if (len(stdate) != 8):
+                print(2)
+                return False
+            if (not(int(stdate[0:4]) >= 1980 and int(stdate[0:4]) <= 2999)):
+                print(3)
+                return False
+            if (not(int(stdate[4:6]) >= 1 and int(stdate[4:6]) <= 12)):
+                print(4)
+                return False
+            if (not(int(stdate[6:8]) >= 1 and int(stdate[6:8]) <= 31)):
+                print(5)
+                return False
+            return True
+        
+        
+            return False
+
 class DeleteService(Transaction):
     def __init__(self):
         super()
