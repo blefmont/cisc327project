@@ -15,8 +15,10 @@ class Transaction:
     #To be called when a new session starts, allows objects to reset memory
     def newSession(self):
         pass
-    #By default execute makes sure you are logged in
+    
+    #Execute attempts to complete the transaction 
     def execute(self):
+        #by default checks if user is logged in
         if (manager.getState() == "loggedOut"):
             self.prompt("You must be logged in to perform that transaction")
             return False
@@ -241,7 +243,7 @@ from the valid services memory so no further tranasactions can be performed
 class DeleteService(Transaction):
     def __init__(self):
         super()
-    def execute():
+    def execute(self):
         if (not super().execute()):
             return None
         if (manager.getState() != "planner"):

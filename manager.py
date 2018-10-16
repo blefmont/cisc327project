@@ -1,5 +1,9 @@
-# manager.py
-# This file will manage things like valid transactions and user state.
+'''
+Manager
+The manager is in charge of managing the transaction objects.
+    It keeps data that the objects need to share (like user states)
+    and insantiatates the objects.
+'''
 import transaction as tModule
 
 transactions = {}
@@ -7,6 +11,8 @@ userState = ""
 validServices = []
 transactionSummary = []
 
+## Returns the user state as a string. Will only return "loggedOut" "agent"
+##  or planner. It can also raise a ValueError
 def getState():
     global userState
     if (userState == "loggedOut" or userState == "agent" \
@@ -15,6 +21,8 @@ def getState():
     else:
         raise ValueError("Impossible Error: userState uninitialized or invalid")
 
+## Allows the transaction classes (used by Login and Logout) to change the
+##  user state
 def changeState(newState):
     global userState
     if (newState == "loggedOut" or newState == "agent" \
@@ -28,7 +36,7 @@ def changeState(newState):
         if (type(st) != str): raise TypeError("State must be a string")
         else: raise ValueError('State must be "loggedOut, "agent" or "planner"')
         
-        
+## Needs to be run first, creates transaction objects and initalizes userState       
 def initialize():
     global userState
     global transactions
