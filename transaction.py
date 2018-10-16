@@ -22,9 +22,10 @@ class Transaction:
             return False
         else:
             return True
+    #To be used for the output to the user
     def prompt(self, s):
         print(s)    
-
+    #Should handle all input for transaction classes
     def promptAndInput(self, s):
         response = input(s+'\n')
         try:
@@ -52,6 +53,8 @@ class Transaction:
     #Check if service name follows proper format
     def checkValidName(self, n):
         try:
+            # Regex, matches all strings that contain alphanumeric
+            #   characters spaces and quote characters
             valid = "^[a-zA-Z0-9' ]*$";
             if type(n) != str:
                 return False
@@ -66,6 +69,7 @@ class Transaction:
         except ValueError:
             return False
         
+    ## Handels creating the lines for the transaction services.
     def createTSFLine(self, code, serviceNumber1 = "00000", amount = "0", \
                       serviceNumber2 = "00000", serviceName = "****", \
                       date = "0"):
@@ -115,12 +119,16 @@ class Transaction:
         if (len(line) > 68):
             self.prompt ("Error: the transaction has too many characters.")
             return False
-        
+        # Successful case
         else:
             manager.transactionSummary.append(line + '\n')
             self.prompt ("Transaction successful")
             return True
-            
+'''
+Class: Login
+Handels logging in for the user, and reads the 
+    valid services file into memory
+'''
 class Login(Transaction):
     
     def __init__(self):
@@ -156,6 +164,11 @@ class Login(Transaction):
                 return None
                 
         self.prompt("Login successful, welcome " + str(manager.getState()))
+'''
+Class: Logout
+Transaction class that handels logging out, also reads the transaction summary
+into file.
+'''
 class Logout(Transaction):
     def __init__(self):
         super()
@@ -174,6 +187,11 @@ class Logout(Transaction):
             self.prompt("IO error during logout")
             return None
         manager.changeState("loggedOut")
+'''
+Class CreateService
+Transaction class that handels createservice transaction.
+Also deals with confirming that dates are in the proper format
+'''
 class CreateService(Transaction):
     def __init__(self):
         super()
@@ -215,7 +233,11 @@ class CreateService(Transaction):
             if (not(int(stdate[6:8]) >= 1 and int(stdate[6:8]) <= 31)):
                 return False
             return True
-
+'''
+Class DeleteService
+transaction class that handels deleting a service and taking it away
+from the valid services memory so no further tranasactions can be performed
+'''
 class DeleteService(Transaction):
     def __init__(self):
         super()
@@ -291,12 +313,38 @@ class CancelTicket(Transaction):
             if (sum(self.transactionHistory.values()) > 20):
                 self.prompt("Can not perform more than 20 change tickets in agent mode.")
                 return None
-        self.createTSFLine('CHG', serviceNumber1 = sNum, amount = ticketAmount)           
+        self.createTSFLine('CAN', serviceNumber1 = sNum, amount = ticketAmount)           
         
 class ChangeTicket(Transaction):
     def __init__(self):
         super()
+        self.numOfTransactions = 0
+    def newSession(self):
+        self.numOfTransactions = 0
+    def execute(self):
+        if (not super().execute()):
+            return None
+        
+        sNumOne = self.promptAndInput("Input current service number")
+        sNumTwo = self.promptAndInput("Input destination service number")
+        ticketAmount = self.promptAndInput("Input number of tickets to change")
 
+        if (not (self.checkValidNumber(sNumOne) or self.checkValidNumber(sNumTwo))):
+            self.prompt("Invalid service number")
+            return None
+        if (not (manager.validServices.count(sNumOne) or manager.validServices.count(sNumTwo))):
+            self.prompt("Service number does not exist")
+            return None
+        if (not ticketAmount.isnumeric()):
+            self.prompt("Invalid ticket amount")
+            return None
+        
+        if (manager.getState() == "agent"):
+            self.numOfTransactions += int(ticketAmount)
+            if (self.numOfTransactions > 20):
+                self.prompt("Too many transactions for this mode")
+                return None
+        self.createTSFLine("CHG", serviceNumber1 = sNumOne, serviceNumber2 = sNumTwo, amount = ticketAmount)
 
 
 

@@ -40,3 +40,4 @@ def initialize():
     transactions["deleteservice"] = tModule.DeleteService()
     transactions["sellticket"] = tModule.SellTicket()
     transactions["cancelticket"] = tModule.CancelTicket()
+    transactions["changeticket"] = tModule.ChangeTicket()
