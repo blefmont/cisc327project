@@ -219,16 +219,80 @@ class CreateService(Transaction):
 class DeleteService(Transaction):
     def __init__(self):
         super()
+    def execute():
+        if (not super().execute()):
+            return None
+        if (manager.getState() != "planner"):
+            self.prompt("You must be in planner mode to execute this transaction")
+            return None
+        
+        snum = self.promptAndInput("What is the service number?")
+        sname = self.promptAndInput("What is the service name?")
+        if (not self.checkValidNumber(snum)):
+            self.prompt("Invalid service number")
+            return None
+        if (not self.checkValidName(sname)):
+            self.prompt("Invalid service name")
+            return None
+        if (not manager.validServices.count(snum)):
+            self.prompt("Service number does not exist")
+            return None
+        else:
+            manager.validServices.remove(snum)
+            self.createTSFLine('DEL', serviceNumber1 = snum, serviceName = sname)
+        
 class SellTicket(Transaction):
     def __init__(self):
         super()
 
     def execute(self):
-        self.serviceNumber = promptAndInput("Input Service Number:");
-        self.serviceName = promptAndInput("Input Service Name:");
+        if (not super().execute()):
+            return None
+        sNum = self.promptAndInput("Input Service Number:")
+        ticketAmount = self.promptAndInput("Input Amount of Tickets")
+        
+        if (not self.checkValidNumber(sNum)):
+            self.prompt("Invalid service number")
+            return None
+        if (not manager.validServices.count(sNum)):
+            self.prompt("Service number does not exist")
+            return None
+        self.createTSFLine('SEL', serviceNumber1 = sNum, amount = ticketAmount)
+        
 class CancelTicket(Transaction):
     def __init__(self):
-        super()
+        self.transactionHistory = {}
+    def newSession(self):
+        self.transactionHistory.clear()
+    def execute(self):
+        if (not super().execute()):
+            return None
+
+        sNum = self.promptAndInput("Input Service Number:")
+        ticketAmount = self.promptAndInput("Input Amount of Tickets")
+        
+        if (not self.checkValidNumber(sNum)):
+            self.prompt("Invalid service number")
+            return None
+        if (not manager.validServices.count(sNum)):
+            self.prompt("Service number does not exist")
+            return None
+        if (not ticketAmount.isnumeric()):
+            self.prompt("Invalid ticket amount")
+            return None
+        if (manager.getState() == "agent"):
+            if (sNum in self.transactionHistory.keys()):
+                self.transactionHistory[sNum] += int(ticketAmount)
+            else:
+                self.transactionHistory[sNum] = int(ticketAmount)
+            if (self.transactionHistory[sNum] > 10):
+                self.prompt("Can not perform more than 10 of these transactions on one service")
+                return None
+            if (sum(self.transactionHistory.values()) > 20):
+                self.prompt("Can not perform more than 20 change tickets in agent mode.")
+                return None
+        self.createTSFLine('CHG', serviceNumber1 = sNum, amount = ticketAmount)           
+        
 class ChangeTicket(Transaction):
     def __init__(self):
         super()
