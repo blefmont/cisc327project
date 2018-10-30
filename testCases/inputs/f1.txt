@@ -1,0 +1,6 @@
+input
+agent
+cancelticket
+12345
+1
+logout

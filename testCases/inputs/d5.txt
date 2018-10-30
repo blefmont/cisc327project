@@ -1,0 +1,6 @@
+login
+agent
+deleteservice
+12345
+Name
+logout

@@ -1,0 +1,7 @@
+input
+planner
+createservice
+23456
+30010101
+Name
+logout

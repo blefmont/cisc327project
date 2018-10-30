@@ -1,0 +1,17 @@
+login
+agent
+sellticket
+12345
+1
+cancelticket
+12345
+1
+changeticket
+12345
+12345
+1
+createservice
+34567
+20010101
+Name
+logout

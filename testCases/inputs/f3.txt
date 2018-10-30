@@ -1,0 +1,9 @@
+input
+agent
+cancelticket
+12345
+15
+cancelticket
+54321
+15
+logout

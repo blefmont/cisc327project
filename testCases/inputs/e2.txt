@@ -1,0 +1,6 @@
+input
+planner
+sellticket
+12345
+9999
+logout

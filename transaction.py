@@ -143,8 +143,12 @@ class Login(Transaction):
             VSLines = VSFile.readlines()
             for line in VSLines:
                 if (not self.checkValidNumber(line)):
+                    if (line == "00000"):
+                        break
                     self.prompt("Valid services has unexpected content")
                     return None
+                if (line == "00000"):
+                    break
             VSFile.close()
         except IOError:
             self.prompt("Error reading valid services file")
