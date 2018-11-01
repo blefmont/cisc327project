@@ -1,4 +1,4 @@
-input
+login
 agent
 cancelticket
 12345
