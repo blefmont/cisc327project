@@ -218,15 +218,17 @@ class CreateService(Transaction):
         if (not self.checkValidNumber(snum)):
             self.prompt("Invalid service number")
             return None
-        if ((not self.checkValidName(sname)) or sname.count("'")):
+        elif ((not self.checkValidName(sname)) or sname.count("'")):
             self.prompt("Invalid service name")
             return None
-        if (not self.checkValidDate(date)):
+        elif (not self.checkValidDate(date)):
             self.prompt("Invalid service date")
             return None
-        if (manager.validServices.count(snum)):
+        elif (manager.validServices.count(snum)):
             self.prompt("Services number already exists")
-        self.createTSFLine('CRE', serviceNumber1 = snum, serviceName = sname, date = date)
+            return None
+        else:
+            self.createTSFLine('CRE', serviceNumber1 = snum, serviceName = sname, date = date)
             
     def checkValidDate(self, date):
         
@@ -338,10 +340,10 @@ class ChangeTicket(Transaction):
         sNumTwo = self.promptAndInput("Input destination service number")
         ticketAmount = self.promptAndInput("Input number of tickets to change")
 
-        if (not (self.checkValidNumber(sNumOne) or self.checkValidNumber(sNumTwo))):
+        if (not (self.checkValidNumber(sNumOne) and self.checkValidNumber(sNumTwo))):
             self.prompt("Invalid service number")
             return None
-        if (not (manager.validServices.count(sNumOne) or manager.validServices.count(sNumTwo))):
+        if (not (manager.validServices.count(sNumOne) and manager.validServices.count(sNumTwo))):
             self.prompt("Service number does not exist")
             return None
         if (not ticketAmount.isnumeric()):
