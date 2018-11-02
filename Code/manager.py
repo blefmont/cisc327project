@@ -7,8 +7,11 @@ The manager is in charge of managing the transaction objects.
 import sys
 import transaction as tModule
 
-fileName = sys.argv[1]
-inf = open(fileName, "r")
+if (len(sys.argv) > 1):
+    fileName = sys.argv[1]
+    inf = open(fileName, "r")
+else:
+    inf = sys.stdin
         
 transactions = {}
 userState = ""

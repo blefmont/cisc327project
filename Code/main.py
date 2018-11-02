@@ -14,7 +14,7 @@ def inputLoop():
             manager.transactions[action].execute()
         elif (action == "debug"):
             break
-        elif (not action):
+        elif (not action and manager.inf != sys.stdin):
             break
         else:
             print("Invalid transaction")
