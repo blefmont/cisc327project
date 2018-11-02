@@ -30,8 +30,10 @@ class Transaction:
         print(s)    
     #Should handle all input for transaction classes
     def promptAndInput(self, s):
-        print(s+'\n');
-        response = manager.inf.readline().strip()
+        self.prompt(s)
+        response = manager.inf.readline()
+        if (response[-1] == '\n'):
+            response = response[0:-1]
         try:
             str(response)
         except TypeError:
@@ -64,7 +66,7 @@ class Transaction:
                 return False
             elif len(n) < 3 or len(n) > 39:
                 return False       
-            elif n[:1] == " " or n[-1:] == " ":
+            elif n[0] == " " or n[-1] == " ":
                 return False       
             elif bool(re.match(valid, n)):
                 return True
