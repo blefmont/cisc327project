@@ -64,7 +64,7 @@ class Transaction:
                 return False
             elif len(n) < 3 or len(n) > 39:
                 return False       
-            elif n[:1] == " " or n[-1:] == " ":
+            elif n[0] == " " or n[-1] == " ":
                 return False       
             elif bool(re.match(valid, n)):
                 return True
