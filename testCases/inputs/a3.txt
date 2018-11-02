@@ -6,4 +6,4 @@ createservice
 23456
 20180101
 Name
-logoutt
+logout

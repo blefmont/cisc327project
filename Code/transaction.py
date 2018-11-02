@@ -125,9 +125,14 @@ class Transaction:
             return False
         # Successful case
         else:
-            manager.transactionSummary.append(line + '\n')
-            self.prompt ("Transaction successful")
-            return True
+            if (code != 'EOS'):
+                manager.transactionSummary.append(line + "\n")
+                self.prompt ("Transaction successful")
+                return True
+            else:
+                manager.transactionSummary.append(line)
+                self.prompt ("Transaction successful")
+                return True
 '''
 Class: Login
 Handels logging in for the user, and reads the 
