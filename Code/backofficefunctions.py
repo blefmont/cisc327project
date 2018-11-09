@@ -1,6 +1,7 @@
 '''
 Back office functions
 '''
+## Objects for storing the data
 class Transaction():
     def __init__(self, tType, snum1, amount, snum2, name):
         self.tType = tType
@@ -35,6 +36,8 @@ def readOCSF(oCSFcontents):
     return services
 
 def applyTransactions(transactions, services):
+    
+    ## Loop through the transactions, applying changes
     for t in transactions:
         if (t.tType == 'CRE'):
             serviceExists = findService(services, t.snum1)
@@ -80,7 +83,7 @@ def applyTransactions(transactions, services):
                     print("Cancel ticket transaction for {} ignored because no tickets are sold".format(t.snum1))
             else:
                 print("Cancel ticket transaction for {} ignored because of invalid service".format(t.snum1))  
-        
+    ## 
 def findService(services, sNum):
     for s in service:
         if (s.number == sNum):

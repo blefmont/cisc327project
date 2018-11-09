@@ -14,6 +14,7 @@ Authors:
 '''
 
 import sys
+from backofficefunctions import *
 
 if (len(sys.argv) > 1):
     mergedTSFfname =    sys.argv[1]
@@ -21,7 +22,7 @@ if (len(sys.argv) > 1):
     newCSFfname =       sys.argv[3]
     VSFfname =          sys.argv[4]
 else:
-    pass
+    
 
 ## Read in the merged TSF
 mTSF = open(mergedTSFfname)
