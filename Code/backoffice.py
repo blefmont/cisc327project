@@ -21,8 +21,7 @@ if (len(sys.argv) > 1):
     oldCSFfname =       sys.argv[2]
     newCSFfname =       sys.argv[3]
     VSFfname =          sys.argv[4]
-else:
-    
+
 
 ## Read in the merged TSF
 mTSF = open(mergedTSFfname)
@@ -38,7 +37,7 @@ oCSF.close()
 
 ## Apply the transactions
 
-nCSFcontents, VSFcontents = applyTransactions()
+nCSFcontents, vsfContents = applyTransactions(transactions, services)
 
 ## Write the new central services file
 nCSF = open(newCSFfname, 'w')
@@ -47,5 +46,5 @@ nCSF.close()
 
 ## Write the new Valid Services file
 vsf = open(VSFfname, 'w')
-vsf.writelines(VSFcontents)
+vsf.writelines(vsfContents)
 vsf.close()
