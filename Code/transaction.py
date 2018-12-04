@@ -148,10 +148,12 @@ class Login(Transaction):
     def execute(self):
         ## Reads in the valid services file
         try:
-            VSFile = open("validServices.txt")
+            VSFile = open("../validservices.txt")
             VSLines = VSFile.readlines()
             for line in VSLines:
-                if (not self.checkValidNumber(line)):
+                if (line.strip() == '00000'):
+                    pass
+                elif (not self.checkValidNumber(line)):
                     self.prompt("Valid services has unexpected content")
                     return None
             VSFile.close()
@@ -169,7 +171,7 @@ class Login(Transaction):
             if (response == "agent" or response == "planner"):
                 manager.changeState(response)
                 for line in VSLines:
-                    manager.validServices.append(line)
+                    manager.validServices.append(line.strip())
             else:
                 self.prompt("login failed, invalid mode")
                 return None

@@ -31,7 +31,7 @@ def readOCSF(oCSFcontents):
     services = []
     for line in oCSFcontents:
         sLine = line.split()
-        s = Service(int(sLint[0]), int(sLine[2]), sLine[3])
+        s = Service(int(sLine[0]), int(sLine[2]), sLine[3])
         services.append(s)
     return services
 
@@ -89,8 +89,8 @@ def applyTransactions(transactions, services):
     vsfContents = []
     nCSFcontents = []
     for s in services:
-        vsfContents.append(str(s.number))
-        nCSFcontents.append(" ".join((s.number, s.capacity, s.ticketsSold,\
+        vsfContents.append(str(s.number) + '\n')
+        nCSFcontents.append(" ".join((str(s.number), str(s.capacity), str(s.ticketsSold),\
                                       s.name)))
     vsfContents.append('00000')
 
