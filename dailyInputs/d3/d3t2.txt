@@ -1,6 +1,6 @@
 login
-planner
+agent
 sellticket
-23456
-1
+45678
+10
 logout

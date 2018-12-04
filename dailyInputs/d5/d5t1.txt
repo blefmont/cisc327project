@@ -2,5 +2,5 @@ login
 planner
 deleteservice
 23456
-Name
+name doesn't matter
 logout

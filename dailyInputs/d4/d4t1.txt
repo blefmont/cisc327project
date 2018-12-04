@@ -1,0 +1,6 @@
+login
+agent
+cancelticket
+45678
+7
+logout

@@ -5,13 +5,21 @@
 ## Brandon Christof     20014247
 
 ## Create the initial valid services file
-printf '%s\r\n' '12345' '00000' >validservices.txt
+printf '%s\r\n''00000' >validservices.txt
 ## Create the initial central services file
-printf '%s\r\n' '12345 30 0 name ' >centralservices.txt
+touch centralservices.txt
 
 ## For 5 times
 for i in `seq 0 4`;
 do
+    for j in dailyInputs/*.txt;
+    do
+        rm ${j}
+    done
+    for j in dailyInputs/d${i}/*.txt;
+    do
+        mv ${j} ../${j}
+    done
     ## Save the old VSF and CSF files
     cp validservices.txt vsfDay${i}.txt
     cp centralservices.txt csfDay${i}.txt

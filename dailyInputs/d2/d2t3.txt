@@ -1,0 +1,12 @@
+login
+agent
+sellticket
+12345
+2
+sellticket
+23456
+2
+sellticket
+34567
+2
+logout

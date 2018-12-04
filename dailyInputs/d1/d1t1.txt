@@ -1,0 +1,7 @@
+login
+planner
+createservice
+12345
+20180101
+First transaction
+logout
