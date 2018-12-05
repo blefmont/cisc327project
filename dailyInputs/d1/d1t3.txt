@@ -1,6 +1,7 @@
 login
+planner
 createservice
 23456
 20180101
-duplicate service
+second service
 logout

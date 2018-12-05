@@ -5,24 +5,29 @@
 ## Brandon Christof     20014247
 
 ## Create the initial valid services file
-printf '%s\r\n''00000' >validservices.txt
+echo '00000' >validservices.txt
 ## Create the initial central services file
-touch centralservices.txt
+echo '' >centralservices.txt
 
 ## For 5 times
-for i in `seq 0 4`;
+for i in `seq 1 5`;
 do
-    for j in dailyInputs/*.txt;
+    for existingFile in dailyInputs/*.txt;
     do
-        rm ${j}
+        rm ${existingFile}
     done
-    for j in dailyInputs/d${i}/*.txt;
+    cp SummaryFile/MergeTransactionSummaryFile.txt Outputs/MTSFd${i}.txt
+    for existingFile in SummaryFile/*txt;
     do
-        mv ${j} ../${j}
+        rm ${existingFile}
+    done
+    for iFile in dailyInputs/d${i}/*.txt;
+    do
+        cp ${iFile} dailyInputs/$(basename $iFile)
     done
     ## Save the old VSF and CSF files
-    cp validservices.txt vsfDay${i}.txt
-    cp centralservices.txt csfDay${i}.txt
+    cp validservices.txt vsfPreDay${i}.txt
+    cp centralservices.txt csfPreDay${i}.txt
     ## Run the daily script
     ./327daily.sh
 done 

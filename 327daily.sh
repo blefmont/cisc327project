@@ -15,7 +15,7 @@ rm MergeTransactionSummaryFile.txt
 for i in *.txt
 do
     cat $i >> MergeTransactionSummaryFile.txt
-    echo "" >> MergeTransactionSummaryFile.txt
+    printf '%s\r\n' "" >> MergeTransactionSummaryFile.txt
 done
 
 py -3 ../Code/backOffice.py MergeTransactionSummaryFile.txt ../centralservices.txt ../centralservices.txt ../validservices.txt

@@ -1,0 +1,3 @@
+12345 30 6 First transaction 
+23456 30 3 second service 
+45678 30 14 fourth service 

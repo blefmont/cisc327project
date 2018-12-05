@@ -1,0 +1,2 @@
+DEL 23456 0 00000 name doesn't matter 0
+EOS 00000 0 00000 **** 0
